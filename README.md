@@ -1,2 +1,2 @@
-# ansible_nginx_fpm_php
-Receta para instalar wordpress en nginx + fpm_php
+# automatizacion_iaw
+Ejemplo de automatización con ansible, para el módulo de IAW
