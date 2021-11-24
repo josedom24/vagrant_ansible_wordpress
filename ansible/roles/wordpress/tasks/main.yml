@@ -3,12 +3,23 @@
     pkg: 
      - unzip
 - name: download wordpress
-  get_url: url=https://wordpress.org/latest.zip dest=/tmp/latest.zip mode=0640
+  get_url: url=https://wordpress.org/latest.zip dest=/root/latest.zip mode=0640
 - name: unzip wordpress
-  unarchive: src=/tmp/latest.zip dest=/var/www/html copy=no owner=www-data group=www-data mode=0744
+  unarchive: src=/root/latest.zip dest=/var/www/html copy=no owner=www-data group=www-data mode=0744
+
+- name: Copy wordpress.sql
+  template: >
+    src=wordpress.sql
+    dest=/tmp/wordpress.sql
+    owner=root
+    group=root
+    mode=0644
 
 - name: create database wordpress
-  mysql_db: name={{wordpress_bd}} state=present
+  mysql_db: 
+    name: "{{wordpress_bd}}"
+    state: import
+    target: /tmp/wordpress.sql
 
 - name: create user mysql wordpress
   mysql_user: name={{wordpress_user}} host={{ item }} password={{wordpress_pass}} priv={{wordpress_bd}}.*:ALL,GRANT
